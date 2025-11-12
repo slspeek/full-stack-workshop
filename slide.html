@@ -25,6 +25,7 @@
       .section-title {
         background: linear-gradient(45deg, #6db33f, #dd0031);
         -webkit-background-clip: text;
+        background-clip: text;
         -webkit-text-fill-color: transparent;
         font-weight: bold;
         font-size: 2em;
@@ -381,6 +382,12 @@ public class HelloController {
                 </div>
               </div>
             </div>
+          </section>
+
+          <!-- Lesson 2 - Part 2 -->
+          <section>
+            <div class="phase-badge">Lesson 2 - Part 2</div>
+            <h2 style="font-size: 1.3em">Code</h2>
             <div class="code-flex-container">
               <pre
                 class="code-wrapper"
@@ -430,9 +437,9 @@ public class Book {
             </div>
           </section>
 
-          <!-- Lesson 2 - Part 2 -->
+          <!-- Lesson 2 - Part 3 -->
           <section>
-            <div class="phase-badge">Lesson 2 - Part 2</div>
+            <div class="phase-badge">Lesson 2 - Part 3</div>
             <h2 style="font-size: 1.3em">Advanced REST Endpoints</h2>
 
             <div class="content-container">
@@ -463,6 +470,12 @@ public class Book {
                 </div>
               </div>
             </div>
+          </section>
+
+          <!-- Lesson 2 - Part 4 -->
+          <section>
+            <div class="phase-badge">Lesson 2 - Part 4</div>
+            <h2 style="font-size: 1.3em">Code</h2>
             <div class="code-flex-container">
               <pre
                 class="code-wrapper"
@@ -481,12 +494,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-// Assuming Book class is defined as in Lesson 2 - Part 1
+// Assuming Book class is defined as in Lesson 2 - Part 2
 
 @RestController
 @RequestMapping("/api/books")
 public class BookController {
-    // Re-using the in-memory list and nextId from Lesson 2 - Part 1 for demonstration
+    // Re-using the in-memory list and nextId from Lesson 2 - Part 2 for demonstration
     private List&lt;Book&gt; books = new ArrayList<>();
     private Long nextId = 1L;
 
@@ -538,9 +551,7 @@ public class BookController {
 
           <!-- Lesson 3 - Part 1 -->
           <section>
-            <div class="phase-badge">
-              Lesson 3 - Part 1 : Database with JPA & H2
-            </div>
+            <div class="phase-badge">Lesson 3 - Part 1</div>
             <h2 style="font-size: 1.3em">Database with JPA & H2</h2>
 
             <div class="content-container">
@@ -587,8 +598,8 @@ public class BookController {
 
           <!-- Lesson 3 - Part 2 : Dependencies 🛠️ -->
           <section>
-            <div class="phase-badge">Lesson 3 - Part 2 : Dependencies 🛠️</div>
-            <h2 style="font-size: 1.3em">Dependencies</h2>
+            <div class="phase-badge">Lesson 3 - Part 2</div>
+            <h2 style="font-size: 1.3em">Dependencies 🛠️</h2>
             <div class="code-flex-container">
               <pre
                 class="code-wrapper"
@@ -609,7 +620,7 @@ public class BookController {
 
           <!-- Lesson 3 - Part 3 -->
           <section>
-            <div class="phase-badge">Lesson 3 - Part 3 : Implementation 🛠️</div>
+            <div class="phase-badge">Lesson 3 - Part 3</div>
             <div style="font-size: 1.3em">@Entity Annotation</div>
             <div class="code-flex-container">
               <pre
@@ -669,7 +680,7 @@ public class Book {
 
           <!-- Lesson 3 - Part 4 -->
           <section>
-            <div class="phase-badge">Lesson 3 - Part 4 : Implementation 🛠️</div>
+            <div class="phase-badge">Lesson 3 - Part 4</div>
             <div style="font-size: 1.3em">JpaRepository Interface</div>
             <div class="code-flex-container">
               <pre
@@ -686,7 +697,7 @@ public interface BookRepository extends JpaRepository&lt;Book, Long&gt; {
 
           <!-- Lesson 3 - Part 5 -->
           <section>
-            <div class="phase-badge">Lesson 3 - Part 5 : Implementation 🛠️</div>
+            <div class="phase-badge">Lesson 3 - Part 5</div>
 
             <div class="code-flex-container">
               <pre
@@ -762,9 +773,7 @@ public class BookController {
 
           <!-- Lesson 3 - Part 6 : Application Properties 🛠️ -->
           <section>
-            <div class="phase-badge">
-              Lesson 3 - Part 6 : Application Properties 🛠️
-            </div>
+            <div class="phase-badge">Lesson 3 - Part 6</div>
             <h2 style="font-size: 1.3em">Application Properties</h2>
             <div class="code-flex-container">
               <pre
@@ -831,7 +840,7 @@ http://localhost:8080/h2-console
                 <h4>🔬 Lab: PostgreSQL Setup</h4>
                 <div class="lab-steps">
                   <ol>
-                    <li>Install PostgreSQL on your system</li>
+                    <li>PostgreSQL on your system</li>
                     <li>Create new database: bookdb</li>
                     <li>Update `pom.xml` with PostgreSQL dependency</li>
                     <li>Configure `application.yaml` for PostgreSQL</li>
@@ -839,6 +848,145 @@ http://localhost:8080/h2-console
                   </ol>
                 </div>
               </div>
+            </div>
+          </section>
+
+          <!-- Lesson 4 - Part 2 -->
+          <section>
+            <div class="phase-badge">Lesson 4 - Part 2</div>
+            <h2 style="font-size: 1.3em">Installing Docker Engine</h2>
+
+            <div class="content-container">
+              <div class="theory-box">
+                <h4>📚 Docker Fundamentals</h4>
+                <ul class="compact-list">
+                  <li>
+                    What is Docker?
+                    <div class="description">
+                      Platform for developing, shipping, and running
+                      applications in containers.
+                    </div>
+                  </li>
+                  <li>
+                    Why Docker for Development?
+                    <div class="description">
+                      Ensures consistent environments, simplifies dependencies.
+                    </div>
+                  </li>
+                  <li>
+                    Docker Engine
+                    <div class="description">
+                      The client-server application that runs Docker containers.
+                    </div>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="lab-box">
+                <h4>🔬 Lab: Install Docker Engine</h4>
+                <div class="lab-steps">
+                  <ol>
+                    <li>
+                      Follow official Docker documentation for your OS:
+                      <ul style="font-size: 0.7em">
+                        <li>
+                          <a
+                            href="https://docs.docker.com/engine/install/"
+                            target="_blank"
+                            >Install Docker Engine</a
+                          >
+                        </li>
+                      </ul>
+                    </li>
+                    <li>Verify Docker installation: `docker --version`</li>
+                    <li>Run a sample container: `docker run hello-world`</li>
+                    <li>Understand the output from hello-world container</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Lesson 4 - Part 3 -->
+          <section>
+            <div class="phase-badge">Lesson 4 - Part 3</div>
+            <h2 style="font-size: 1.3em">Docker Compose for PostgreSQL</h2>
+
+            <div class="content-container">
+              <div class="theory-box">
+                <h4>📚 Docker Compose Basics</h4>
+                <ul class="compact-list">
+                  <li>
+                    What is Docker Compose?
+                    <div class="description">
+                      Tool for defining and running multi-container Docker
+                      applications.
+                    </div>
+                  </li>
+                  <li>
+                    `docker-compose.yaml` file
+                    <div class="description">
+                      YAML file to configure application's services, networks,
+                      and volumes.
+                    </div>
+                  </li>
+                  <li>
+                    Advantages
+                    <div class="description">
+                      Simplifies complex application setup and deployment.
+                    </div>
+                  </li>
+                </ul>
+              </div>
+
+              <div class="lab-box">
+                <h4>🔬 Lab: Run PostgreSQL with Docker Compose</h4>
+                <div class="lab-steps">
+                  <ol>
+                    <li>
+                      Create a `docker-compose.yaml` file in your project root
+                    </li>
+                    <li>Define a PostgreSQL service with `bookdb` database</li>
+                    <li>
+                      Set environment variables for PostgreSQL (user, password,
+                      db name)
+                    </li>
+                    <li>Map port 5432 from container to host</li>
+                    <li>Run `docker-compose up -d` to start the service</li>
+                    <li>Verify PostgreSQL container is running: `docker ps`</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- Lesson 4 - Part 4 -->
+          <section>
+            <div class="phase-badge">Lesson 4 - Part 4</div>
+            <div class="code-flex-container">
+              <pre
+                class="code-wrapper"
+              ><code class="yaml" data-trim style="font-size: 0.55em;">
+# docker-compose.yaml
+name: bookdb
+services:
+  postgresql:
+    image: postgres:17.4
+    # volumes:
+    #   - ~/volumes/jhipster/bookdb/postgresql/:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=bookdb
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U $${POSTGRES_USER}']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    # If you want to expose these ports outside your dev PC,
+    # remove the "127.0.0.1:" prefix
+    ports:
+      - 127.0.0.1:5432:5432
+                    </code></pre>
             </div>
           </section>
 
@@ -890,6 +1038,11 @@ http://localhost:8080/h2-console
                 </div>
               </div>
             </div>
+          </section>
+          <!-- Lesson 5 - Part 2 -->
+          <section>
+            <div class="phase-badge">Lesson 5 - Part 2</div>
+            <h2 style="font-size: 1.3em">Code</h2>
 
             <div class="code-flex-container">
               <pre
