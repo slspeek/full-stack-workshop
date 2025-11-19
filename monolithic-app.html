@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monolithic Architecture</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 
+    Chosen Palette: Warm Neutrals (Background: bg-gray-50, Text: bg-gray-800, Accent: indigo-600)
+    Application Structure Plan: The SPA is structured into three main thematic sections: 'Overview', 'Interactive Architecture', and 'Interactive Data Flow'. This design was chosen over a direct report-to-page mapping to create an exploratory learning experience. The "Interactive Architecture" diagram acts as the primary navigation hub, visually linking each architectural layer to its detailed description in the "Component Details" subsection. This direct, visual-to-text connection enhances usability and understanding. The "Interactive Data Flow" section deconstructs the complex 9-step process into a simple, guided "stepper" interface, making it much easier to digest. The user flow is: Land -> Explore Overview -> Click Diagram Layer -> Read Details -> Explore Data Flow.
+    Visualization & Content Choices: 
+    - Report Info: 5 Architectural Layers -> Goal: Organize/Inform -> Viz: Interactive Diagram (HTML/Tailwind) -> Interaction: Click layer -> Justification: Transforms static list into a visual, navigable hub. -> Method: HTML/CSS/JS (click listeners).
+    - Report Info: Details for each layer -> Goal: Inform -> Viz: Tabbed/Toggleable content blocks -> Interaction: Show/hide based on diagram click -> Justification: Directly connects details to the visual diagram component. -> Method: JS (state management).
+    - Report Info: 9-Step Data Flow -> Goal: Change/Inform (show process) -> Viz: Interactive "Stepper" (HTML/JS) -> Interaction: Click Next/Prev buttons -> Justification: Makes a dense text block into a simple, step-by-step guided tour. -> Method: JS (array + index state).
+    CONFIRMATION: NO SVG graphics used. NO Mermaid JS used.
+    -->
+    <style>
+        .diagram-layer {
+            transition: all 0.3s ease-in-out;
+        }
+        .diagram-layer:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .diagram-layer.active {
+            border-color: #4f46e5; 
+            border-width: 2px;
+            background-color: #eef2ff;
+        }
+        .detail-content {
+            display: none;
+        }
+        .detail-content.active {
+            display: block;
+        }
+        .step-indicator {
+            transition: all 0.3s ease;
+        }
+        .step-indicator.active {
+            background-color: #4f46e5;
+            color: white;
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body class="font-sans antialiased text-gray-800 bg-gray-50">
+    
+    <header class="py-6 bg-white shadow-sm">
+        <div class="container px-6 mx-auto max-w-7xl">
+            <h1 class="text-3xl font-bold text-center text-indigo-600 md:text-4xl">Monolithic Architecture</h1>
+            <p class="mt-2 text-lg text-center text-gray-600">An interactive guide to the components and data flow.</p>
+        </div>
+    </header>
+
+    <main class="container px-6 py-12 mx-auto max-w-7xl">
+        
+        <section id="overview" class="mb-16">
+            <h2 class="mb-4 text-3xl font-semibold text-center">Overview</h2>
+            <div class="max-w-4xl p-8 mx-auto bg-white rounded-lg shadow-lg">
+                <p class="mb-4 text-lg text-gray-700">This application provides an interactive breakdown of the Monolithic architecture. In this structure, the entire application—frontend, backend, and database access—is packaged into a single deployable unit (typically a `.war` or executable `.jar` file). This is a common and effective structure for many projects, offering simplicity in development and deployment.</p>
+                <p class="text-lg text-gray-700">Use the diagram and data flow sections below to explore how the different layers of the application work together.</p>
+            </div>
+        </section>
+        
+        <section id="architecture" class="mb-16">
+            <h2 class="mb-4 text-3xl font-semibold text-center">Interactive Architecture</h2>
+            <p class="mb-8 text-lg text-center text-gray-600 max-w-3xl mx-auto">Click on any layer in the diagram to see its detailed components, technology stack, and purpose in the "Component Details" section below.</p>
+
+            <div class="diagram-container w-full max-w-5xl mx-auto p-4 md:p-8 bg-white rounded-lg shadow-xl">
+                <div class="flex flex-col space-y-4">
+                    
+                    <div id="diagram-frontend" data-target="detail-frontend" class="diagram-layer active cursor-pointer p-6 bg-indigo-50 border border-indigo-200 rounded-lg shadow-md text-center">
+                        <h3 class="text-xl font-semibold text-indigo-700">1. Presentation Layer (Frontend)</h3>
+                        <p class="text-gray-600">User's Browser (Angular / React / Vue.js)</p>
+                    </div>
+
+                    <div class="flex justify-center">
+                        <span class="text-2xl text-gray-500">↓</span>
+                    </div>
+                    
+                    <div id="diagram-api" data-target="detail-api" class="diagram-layer cursor-pointer p-6 bg-green-50 border border-green-200 rounded-lg shadow-md text-center">
+                        <h3 class="text-xl font-semibold text-green-700">2. Backend API Layer (Spring MVC/REST)</h3>
+                        <p class="text-gray-600">REST Controllers & Spring Security</p>
+                    </div>
+                    
+                    <div class="flex justify-center">
+                        <span class="text-2xl text-gray-500">↓</span>
+                    </div>
+
+                    <div id="diagram-service" data-target="detail-service" class="diagram-layer cursor-pointer p-6 bg-blue-50 border border-blue-200 rounded-lg shadow-md text-center">
+                        <h3 class="text-xl font-semibold text-blue-700">3. Business Logic Layer (Service Layer)</h3>
+                        <p class="text-gray-600">Spring Services (@Service)</p>
+                    </div>
+
+                    <div class="flex justify-center">
+                        <span class="text-2xl text-gray-500">↓</span>
+                    </div>
+
+                    <div id="diagram-repository" data-target="detail-repository" class="diagram-layer cursor-pointer p-6 bg-yellow-50 border border-yellow-200 rounded-lg shadow-md text-center">
+                        <h3 class="text-xl font-semibold text-yellow-700">4. Data Access Layer (Repository Layer)</h3>
+                        <p class="text-gray-600">Spring Data JPA / Repositories</p>
+                    </div>
+
+                    <div class="flex justify-center">
+                        <span class="text-2xl text-gray-500">↓</span>
+                    </div>
+
+                    <div id="diagram-database" data-target="detail-database" class="diagram-layer cursor-pointer p-6 bg-red-50 border border-red-200 rounded-lg shadow-md text-center">
+                        <h3 class="text-xl font-semibold text-red-700">5. Persistence Layer (Database)</h3>
+                        <p class="text-gray-600">SQL (PostgreSQL, MySQL) or NoSQL (MongoDB)</p>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section id="details" class="mb-16">
+            <h2 class="mb-4 text-3xl font-semibold text-center">Component Details</h2>
+            <p class="mb-8 text-lg text-center text-gray-600 max-w-3xl mx-auto">This section updates based on your selection from the interactive diagram above. The currently selected layer is highlighted.</p>
+
+            <div class="max-w-4xl mx-auto bg-white rounded-lg shadow-xl overflow-hidden">
+                
+                <div id="detail-frontend" class="detail-content p-8 active">
+                    <h3 class="mb-4 text-2xl font-semibold text-indigo-700">1. Presentation Layer (Frontend)</h3>
+                    <ul class="space-y-4 list-disc list-outside pl-5 text-gray-700 text-base">
+                        <li><strong>Technology Stack:</strong> Typically Angular, React, or Vue.js.</li>
+                        <li><strong>Purpose:</strong> Handles the UI/UX, user interactions, and makes API calls to the backend to fetch or submit data.</li>
+                        <li><strong>Build Process:</strong> The frontend code is compiled into static assets (HTML, CSS, JavaScript) which are then bundled inside the single Java application JAR/WAR file for delivery.</li>
+                    </ul>
+                </div>
+
+                <div id="detail-api" class="detail-content p-8">
+                    <h3 class="mb-4 text-2xl font-semibold text-green-700">2. Backend API Layer (Spring MVC/REST)</h3>
+                    <p class="mb-4 text-base text-gray-700">This is the gateway to the application logic and data.</p>
+                    <ul class="space-y-4 list-disc list-outside pl-5 text-gray-700 text-base">
+                        <li><strong>Technology Stack:</strong> Spring Web/MVC (using Spring Boot).</li>
+                        <li><strong>Components:</strong>
+                            <ul class="list-disc list-outside pl-5 mt-2 space-y-2">
+                                <li><strong>REST Controllers:</strong> Define the API endpoints (e.g., `/api/users`). They receive HTTP requests, delegate processing to the Service Layer, and return JSON responses.</li>
+                                <li><strong>Security (Spring Security):</strong> Manages authentication (e.g., JWT, OAuth 2.0) and authorization, ensuring only authorized users can access specific endpoints.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <div id="detail-service" class="detail-content p-8">
+                    <h3 class="mb-4 text-2xl font-semibold text-blue-700">3. Business Logic Layer (Service Layer)</h3>
+                    <p class="mb-4 text-base text-gray-700">The heart of the application, containing all the core business rules and logic.</p>
+                    <ul class="space-y-4 list-disc list-outside pl-5 text-gray-700 text-base">
+                        <li><strong>Technology Stack:</strong> Spring Services (`@Service` annotations).</li>
+                        <li><strong>Purpose:</strong> Orchestrates complex operations, validates data, handles transactions, and applies business rules before data is persisted or retrieved. It decouples the Controllers from the Repositories.</li>
+                    </ul>
+                </div>
+
+                <div id="detail-repository" class="detail-content p-8">
+                    <h3 class="mb-4 text-2xl font-semibold text-yellow-700">4. Data Access Layer (Repository Layer)</h3>
+                    <p class="mb-4 text-base text-gray-700">This layer manages interaction with the persistence store.</p>
+                    <ul class="space-y-4 list-disc list-outside pl-5 text-gray-700 text-base">
+                        <li><strong>Technology Stack:</strong> Spring Data JPA (or MongoDB/Cassandra/etc.).</li>
+                        <li><strong>Components:</strong>
+                            <ul class="list-disc list-outside pl-5 mt-2 space-y-2">
+                                <li><strong>JPA Repositories:</strong> Interfaces (e.g., `UserRepository extends JpaRepository<User, Long>`) that simplify database operations (CRUD) without needing to write boilerplate code.</li>
+                                <li><strong>Entities:</strong> JPA annotated classes that map directly to database tables.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <div id="detail-database" class="detail-content p-8">
+                    <h3 class="mb-4 text-2xl font-semibold text-red-700">5. Persistence Layer (Database)</h3>
+                    <p class="mb-4 text-base text-gray-700">The storage engine for the application data.</p>
+                    <ul class="space-y-4 list-disc list-outside pl-5 text-gray-700 text-base">
+                        <li><strong>Technology Stack:</strong> Relational (e.g., PostgreSQL, MySQL, MariaDB) or NoSQL (e.g., MongoDB, Couchbase).</li>
+                        <li><strong>Deployment:</strong> For a monolith, the database typically runs as a separate service or container alongside the application server.</li>
+                    </ul>
+                </div>
+
+            </div>
+        </section>
+        
+        <section id="data-flow">
+            <h2 class="mb-4 text-3xl font-semibold text-center">Interactive Data Flow</h2>
+            <p class="mb-8 text-lg text-center text-gray-600 max-w-3xl mx-auto">Use the "Next" and "Previous" buttons to walk through the typical data flow for a user request, from the browser all the way to the database and back.</p>
+
+            <div class="flow-container w-full max-w-4xl mx-auto p-8 bg-white rounded-lg shadow-xl">
+                <div class="flex flex-wrap justify-center gap-2 mb-8">
+                </div>
+
+                <div class="p-6 mb-6 bg-gray-100 rounded-lg min-h-[150px] flex items-center justify-center">
+                    <p id="step-description" class="text-xl text-center text-gray-800 font-medium"></p>
+                </div>
+
+                <div class="flex justify-between">
+                    <button id="prev-step" class="px-6 py-2 font-semibold text-white bg-indigo-500 rounded-lg shadow hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-opacity-75 disabled:opacity-50 disabled:cursor-not-allowed">
+                        Previous
+                    </button>
+                    <button id="next-step" class="px-6 py-2 font-semibold text-white bg-indigo-500 rounded-lg shadow hover:bg-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-opacity-75 disabled:opacity-50 disabled:cursor-not-allowed">
+                        Next
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="py-8 mt-16 bg-gray-100 border-t border-gray-200">
+        <div class="container px-6 mx-auto text-center text-gray-600 max-w-7xl">
+            <p>Interactive Architecture Explorer | Built with Tailwind CSS & Vanilla JS</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const dataFlowSteps = [
+                "User Interaction: The user clicks a button on the Frontend.",
+                "API Request: The Frontend sends an HTTP Request (e.g., POST /api/users) to the Monolith's server.",
+                "Controller: The REST Controller receives the request.",
+                "Service: The Controller delegates the request to the Service Layer.",
+                "Repository: The Service Layer uses the Repository to perform a database operation.",
+                "Database: The Repository executes the SQL/NoSQL query on the Persistence Layer.",
+                "Response: Data flows back up (Database -> Repository -> Service -> Controller).",
+                "JSON Response: The Controller formats the data into a JSON Response and sends it back to the Frontend.",
+                "Rendering: The Frontend receives the JSON and updates the UI."
+            ];
+
+            let currentStep = 0;
+            
+            const diagramLayers = document.querySelectorAll('.diagram-layer');
+            const detailContents = document.querySelectorAll('.detail-content');
+            
+            const stepDescription = document.getElementById('step-description');
+            const nextButton = document.getElementById('next-step');
+            const prevButton = document.getElementById('prev-step');
+            const stepIndicatorContainer = document.querySelector('.flow-container .flex-wrap');
+
+            function showLayer(targetId) {
+                diagramLayers.forEach(layer => {
+                    if (layer.dataset.target === targetId) {
+                        layer.classList.add('active');
+                    } else {
+                        layer.classList.remove('active');
+                    }
+                });
+
+                detailContents.forEach(content => {
+                    if (content.id === targetId) {
+                        content.classList.add('active');
+                    } else {
+                        content.classList.remove('active');
+                    }
+                });
+            }
+
+            function showStep(stepIndex) {
+                currentStep = stepIndex;
+                stepDescription.textContent = dataFlowSteps[currentStep];
+
+                prevButton.disabled = currentStep === 0;
+                nextButton.disabled = currentStep === dataFlowSteps.length - 1;
+
+                document.querySelectorAll('.step-indicator').forEach((indicator, index) => {
+                    if (index === currentStep) {
+                        indicator.classList.add('active');
+                    } else {
+                        indicator.classList.remove('active');
+                    }
+                });
+            }
+
+            diagramLayers.forEach(layer => {
+                layer.addEventListener('click', () => {
+                    const targetId = layer.dataset.target;
+                    showLayer(targetId);
+                    
+                    const detailsSection = document.getElementById('details');
+                    detailsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                });
+            });
+
+            dataFlowSteps.forEach((_, index) => {
+                const indicator = document.createElement('div');
+                indicator.classList.add('step-indicator', 'w-8', 'h-8', 'rounded-full', 'bg-gray-200', 'text-gray-700', 'flex', 'items-center', 'justify-center', 'font-semibold');
+                indicator.textContent = index + 1;
+                indicator.dataset.index = index;
+                stepIndicatorContainer.appendChild(indicator);
+
+                indicator.addEventListener('click', () => {
+                    showStep(index);
+                });
+            });
+
+            nextButton.addEventListener('click', () => {
+                if (currentStep < dataFlowSteps.length - 1) {
+                    showStep(currentStep + 1);
+                }
+            });
+
+            prevButton.addEventListener('click', () => {
+                if (currentStep > 0) {
+                    showStep(currentStep - 1);
+                }
+            });
+
+            showLayer('detail-frontend');
+            showStep(0);
+        });
+    </script>
+
+</body>
+</html>
