@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Full-Stack Architecture Diagram</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.6.1/dist/mermaid.min.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+        .diagram-container {
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+        .mermaid {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #ddd;
+        }
+        .legend {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+        }
+        .legend h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+        }
+        .color-box {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+            border-radius: 3px;
+        }
+        .architecture-section {
+            margin: 30px 0;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Full-Stack Architecture Diagram</h1>
+        <h2 style="text-align: center; color: #666;">Spring Boot Backend + Angular Frontend</h2>
+        
+        <div class="diagram-container">
+
+            <!-- Main Architecture Diagram -->
+            <div class="mermaid">
+                graph TB
+                    %% Styling
+                    classDef frontend fill:#dd0031,color:white,stroke:#b30024,stroke-width:2px
+                    classDef backend fill:#6db33f,color:white,stroke:#4a8c2a,stroke-width:2px
+                    classDef database fill:#ff6b00,color:white,stroke:#cc5500,stroke-width:2px
+                    classDef infrastructure fill:#4fc3f7,color:white,stroke:#029acf,stroke-width:2px
+                    classDef external fill:#9c27b0,color:white,stroke:#7b1fa2,stroke-width:2px
+
+                    subgraph FrontendAngular[Frontend - Angular]
+                        A[User Interface]
+                        B[Components]
+                        C[Services]
+                        D[RxJS Observables]
+                        E[HTTP Client]
+                        F[Router]
+                        G[Reactive Forms]
+                        H[Template Directives]
+                    end
+
+                    subgraph BackendSpringBoot[Backend - Spring Boot]
+                        I[REST Controllers]
+                        J[Service Layer]
+                        K[Data Transfer Objects]
+                        L[Business Logic]
+                        M[Exception Handling]
+                        N[Spring Data JPA]
+                        O[Entity Classes]
+                    end
+
+                    subgraph DatabasePersistence[Database & Persistence]
+                        P[(PostgreSQL Database)]
+                        Q[(H2 Development DB)]
+                    end
+
+                    subgraph InfrastructureLayer[Infrastructure]
+                        R[Spring Security]
+                        S[CORS Configuration]
+                        T[Spring Boot Actuator]
+                        U[Application Properties]
+                    end
+
+                    subgraph ExternalServices[External Services]
+                        V[Third-party APIs]
+                        W[Cloud Services]
+                        X[Authentication Providers]
+                    end
+
+                    %% Frontend connections
+                    A --> B
+                    B --> C
+                    C --> D
+                    D --> E
+                    E --> F
+                    B --> G
+                    B --> H
+
+                    %% Backend connections
+                    I --> J
+                    J --> K
+                    J --> L
+                    J --> M
+                    J --> N
+                    N --> O
+
+                    %% Database connections
+                    O --> P
+                    O --> Q
+
+                    %% Infrastructure connections
+                    I --> S
+                    J --> R
+                    J --> T
+                    J --> U
+
+                    %% External connections
+                    J --> V
+                    J --> W
+                    R --> X
+
+                    %% Cross-stack connections
+                    E --> I
+
+                    %% Styling applications
+                    class A,B,C,D,E,F,G,H frontend
+                    class I,J,K,L,M,N,O backend
+                    class P,Q database
+                    class R,S,T,U infrastructure
+                    class V,W,X external
+            </div>
+
+            <!-- Data Flow Diagram -->
+            <div class="mermaid">
+                sequenceDiagram
+                    participant U as User
+                    participant A as Angular UI
+                    participant S as Angular Service
+                    participant C as Spring Controller
+                    participant SL as Service Layer
+                    participant R as Repository
+                    participant DB as Database
+
+                    Note over U,DB: Create New Book Flow
+
+                    U->>A: Fill Book Form & Submit
+                    A->>S: bookService.createBook(bookData)
+                    S->>C: HTTP POST /api/books
+                    Note right of S: JSON Payload with Book DTO
+                    
+                    C->>SL: bookService.createBook(bookDTO)
+                    SL->>SL: Validate Business Rules
+                    SL->>R: bookRepository.save(bookEntity)
+                    R->>DB: INSERT INTO books
+                    DB-->>R: Saved Entity
+                    R-->>SL: Book Entity
+                    SL-->>C: Book DTO
+                    C-->>S: HTTP 201 Created + Book DTO
+                    S-->>A: Observable emits success
+                    A-->>U: Show success message
+
+                    Note over U,DB: Alternative Error Flow
+                    SL-->>C: throws ValidationException
+                    C-->>S: HTTP 400 Bad Request + Error DTO
+                    S-->>A: Observable emits error
+                    A-->>U: Show validation errors
+            </div>
+
+            <!-- Component Relationship Diagram -->
+            <div class="mermaid">
+                graph LR
+                    subgraph AngularModuleStructure[Angular Module Structure]
+                        AM[AppModule]
+                        BM[BookModule]
+                        RM[RouterModule]
+                        HM[HttpClientModule]
+                        FM[FormsModule]
+                        BCL[BookListComponent]
+                        BCC[BookCreateComponent]
+                        BCE[BookEditComponent]
+                        BS[BookService]
+                    end
+
+                    subgraph SpringBootPackageStructure[Spring Boot Package Structure]
+                        SB[SpringBootApplication]
+                        CTL[Controller Package]
+                        SVC[Service Package]
+                        REP[Repository Package]
+                        ENT[Entity Package]
+                        DTO[DTO Package]
+                        CFG[Config Package]
+                        BC[BookController]
+                        BSV[BookService]
+                        BR[BookRepository]
+                        BE[Book Entity]
+                        BD[BookDTO]
+                        CORS[CorsConfig]
+                    end
+
+                    %% Angular connections
+                    AM --> BM
+                    AM --> RM
+                    AM --> HM
+                    AM --> FM
+                    BM --> BCL
+                    BM --> BCC
+                    BM --> BCE
+                    BM --> BS
+
+                    %% Spring Boot connections
+                    SB --> CTL
+                    SB --> SVC
+                    SB --> REP
+                    SB --> ENT
+                    SB --> DTO
+                    SB --> CFG
+                    CTL --> BC
+                    SVC --> BSV
+                    REP --> BR
+                    ENT --> BE
+                    DTO --> BD
+                    CFG --> CORS
+
+                    %% Cross-stack connections
+                    BS -.-> BC
+                    BC -.-> BSV
+                    BSV -.-> BR
+                    BR -.-> BE
+                    BE -.-> BD
+
+                    classDef angular fill:#dd0031,color:white
+                    classDef spring fill:#6db33f,color:white
+
+                    class AM,BM,RM,HM,FM,BCL,BCC,BCE,BS angular
+                    class SB,CTL,SVC,REP,ENT,DTO,CFG,BC,BSV,BR,BE,BD,CORS spring
+            </div>
+
+            <!-- Deployment Architecture -->
+            <div class="mermaid">
+                graph TB
+                    subgraph ProductionDeployment[Production Deployment]
+                        CLD[Cloud Platform]
+                        
+                        subgraph SpringBootApplication[Spring Boot Application]
+                            SBJ[JAR File]
+                            SBS[Embedded Tomcat]
+                            SBA[Spring Boot App]
+                            SBD[Static Files]
+                        end
+
+                        subgraph DatabaseCloud[Database Cloud]
+                            DBC[(PostgreSQL)]
+                        end
+
+                        subgraph ExternalDNS[External DNS]
+                            DNS[Your Domain]
+                        end
+
+                        USR[Users Worldwide]
+                    end
+
+                    subgraph DevelopmentEnvironment[Development Environment]
+                        DEV[Developer Machine]
+                        
+                        subgraph AngularDevServer[Angular Dev Server]
+                            ADS[ng serve]
+                            AB[Angular App]
+                        end
+
+                        subgraph SpringBootDev[Spring Boot Dev]
+                            SBDV[Spring Boot Dev]
+                            SBDD[H2 Database]
+                        end
+                    end
+
+                    %% Production connections
+                    USR --> DNS
+                    DNS --> CLD
+                    CLD --> SBJ
+                    SBJ --> SBS
+                    SBS --> SBA
+                    SBA --> SBD
+                    SBA --> DBC
+
+                    %% Development connections
+                    ADS --> AB
+                    SBDV --> SBDD
+                    AB --> SBDV
+
+                    classDef production fill:#ff6b00,color:white
+                    classDef development fill:#4fc3f7,color:white
+                    classDef database fill:#9c27b0,color:white
+
+                    class CLD,SBJ,SBS,SBA,SBD,DNS,USR production
+                    class DEV,ADS,AB,SBDV,SBDD development
+                    class DBC,SBDD database
+            </div>
+        </div>
+
+        <!-- Legend -->
+        <div class="legend">
+            <h3>Architecture Legend</h3>
+            <div class="legend-item">
+                <div class="color-box" style="background-color: #dd0031;"></div>
+                <span><strong>Angular Frontend</strong> - User interface components and services</span>
+            </div>
+            <div class="legend-item">
+                <div class="color-box" style="background-color: #6db33f;"></div>
+                <span><strong>Spring Boot Backend</strong> - Business logic and API layer</span>
+            </div>
+            <div class="legend-item">
+                <div class="color-box" style="background-color: #ff6b00;"></div>
+                <span><strong>Database Layer</strong> - Data persistence and storage</span>
+            </div>
+            <div class="legend-item">
+                <div class="color-box" style="background-color: #4fc3f7;"></div>
+                <span><strong>Infrastructure</strong> - Configuration and security</span>
+            </div>
+            <div class="legend-item">
+                <div class="color-box" style="background-color: #9c27b0;"></div>
+                <span><strong>External Services</strong> - Third-party integrations</span>
+            </div>
+        </div>
+
+        <!-- Key Architecture Patterns -->
+        <div class="architecture-section">
+            <h3>Key Architecture Patterns</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px;">
+                <div>
+                    <h4>Client-Server Pattern</h4>
+                    <p>Angular (client) communicates with Spring Boot (server) via RESTful HTTP APIs</p>
+                </div>
+                <div>
+                    <h4>Layered Architecture</h4>
+                    <p>Presentation → Business → Persistence layers with clear separation of concerns</p>
+                </div>
+                <div>
+                    <h4>Repository Pattern</h4>
+                    <p>Spring Data JPA abstracts database operations behind repository interfaces</p>
+                </div>
+                <div>
+                    <h4>SPA (Single Page Application)</h4>
+                    <p>Angular handles routing client-side for seamless user experience</p>
+                </div>
+                <div>
+                    <h4>DTO Pattern</h4>
+                    <p>Data Transfer Objects separate internal entities from external API contracts</p>
+                </div>
+                <div>
+                    <h4>Dependency Injection</h4>
+                    <p>Both Angular and Spring Boot use DI for loose coupling and testability</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'default',
+            securityLevel: 'loose',
+            flowchart: {
+                useMaxWidth: true,
+                htmlLabels: true,
+                curve: 'basis'
+            },
+            sequence: {
+                useMaxWidth: true,
+                showSequenceNumbers: true
+            }
+        });
+    </script>
+</body>
+</html>
