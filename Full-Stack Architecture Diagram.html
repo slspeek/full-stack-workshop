@@ -177,21 +177,21 @@
                     participant R as Repository
                     participant DB as Database
 
-                    Note over U,DB: Create New Book Flow
+                    Note over U,DB: Create New Personeel Flow
 
-                    U->>A: Fill Book Form & Submit
-                    A->>S: bookService.createBook(bookData)
-                    S->>C: HTTP POST /api/books
-                    Note right of S: JSON Payload with Book DTO
+                    U->>A: Fill Personeel Form & Submit
+                    A->>S: personeelService.createPersoneel(personeelData)
+                    S->>C: HTTP POST /api/personeel
+                    Note right of S: JSON Payload with PersoneelDTO
                     
-                    C->>SL: bookService.createBook(bookDTO)
+                    C->>SL: personeelService.createPersoneel(personeelDTO)
                     SL->>SL: Validate Business Rules
-                    SL->>R: bookRepository.save(bookEntity)
-                    R->>DB: INSERT INTO books
+                    SL->>R: personeelRepository.save(personeelEntity)
+                    R->>DB: INSERT INTO personeel
                     DB-->>R: Saved Entity
-                    R-->>SL: Book Entity
-                    SL-->>C: Book DTO
-                    C-->>S: HTTP 201 Created + Book DTO
+                    R-->>SL: Personeel Entity
+                    SL-->>C: PersoneelDTO
+                    C-->>S: HTTP 201 Created + PersoneelDTO
                     S-->>A: Observable emits success
                     A-->>U: Show success message
 
@@ -207,14 +207,14 @@
                 graph LR
                     subgraph AngularModuleStructure[Angular Module Structure]
                         AM[AppModule]
-                        BM[BookModule]
+                        BM[PersoneelModule]
                         RM[RouterModule]
                         HM[HttpClientModule]
                         FM[FormsModule]
-                        BCL[BookListComponent]
-                        BCC[BookCreateComponent]
-                        BCE[BookEditComponent]
-                        BS[BookService]
+                        PCL[PersoneelListComponent]
+                        PCC[PersoneelCreateComponent]
+                        PCE[PersoneelEditComponent]
+                        PS[PersoneelService]
                     end
 
                     subgraph SpringBootPackageStructure[Spring Boot Package Structure]
@@ -225,11 +225,11 @@
                         ENT[Entity Package]
                         DTO[DTO Package]
                         CFG[Config Package]
-                        BC[BookController]
-                        BSV[BookService]
-                        BR[BookRepository]
-                        BE[Book Entity]
-                        BD[BookDTO]
+                        BC[PersoneelController]
+                        BSV[PersoneelService]
+                        BR[PersoneelRepository]
+                        PE[Personeel Entity]
+                        PD[PersoneelDTO]
                         CORS[CorsConfig]
                     end
 
@@ -238,10 +238,10 @@
                     AM --> RM
                     AM --> HM
                     AM --> FM
-                    BM --> BCL
-                    BM --> BCC
-                    BM --> BCE
-                    BM --> BS
+                    BM --> PCL
+                    BM --> PCC
+                    BM --> PCE
+                    BM --> PS
 
                     %% Spring Boot connections
                     SB --> CTL
@@ -253,22 +253,22 @@
                     CTL --> BC
                     SVC --> BSV
                     REP --> BR
-                    ENT --> BE
-                    DTO --> BD
+                    ENT --> PE
+                    DTO --> PD
                     CFG --> CORS
 
                     %% Cross-stack connections
-                    BS -.-> BC
+                    PS -.-> BC
                     BC -.-> BSV
                     BSV -.-> BR
-                    BR -.-> BE
-                    BE -.-> BD
+                    BR -.-> PE
+                    PE -.-> PD
 
                     classDef angular fill:#dd0031,color:white
                     classDef spring fill:#6db33f,color:white
 
-                    class AM,BM,RM,HM,FM,BCL,BCC,BCE,BS angular
-                    class SB,CTL,SVC,REP,ENT,DTO,CFG,BC,BSV,BR,BE,BD,CORS spring
+                    class AM,BM,RM,HM,FM,PCL,PCC,PCE,PS angular
+                    class SB,CTL,SVC,REP,ENT,DTO,CFG,BC,BSV,BR,PE,PD,CORS spring
             </div>
 
             <!-- Deployment Architecture -->
